@@ -1,3 +1,5 @@
+package ga
+
 import kotlin.math.sqrt
 
 fun calculateFitness(gen: ArrayList<Int>, classParameterIndex: Int): Double {

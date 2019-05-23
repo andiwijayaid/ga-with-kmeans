@@ -1,4 +1,4 @@
-
+package ga
 fun crossOver(parent1: ArrayList<Any>, parent2: ArrayList<Any>): Array<Any> {
 
     val newChild1 = arrayListOf(parent1[0], parent1[1], parent2[2], parent2[3], parent1[4])

@@ -1,3 +1,5 @@
+package ga
+
 fun getParent(): IntArray {
 
     val fitnessData = ArrayList<Double>()
@@ -7,7 +9,7 @@ fun getParent(): IntArray {
         fitnessData.add(0.toDouble())
     }
 
-//    println("b: $population")
+//    println("b: $ga.getPopulation")
 
     for (i in 0 until numberOfPopulation) {
         val mData = population[i] as ArrayList<Any>

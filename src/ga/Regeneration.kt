@@ -1,10 +1,12 @@
+package ga
+
 fun regeneration() {
     val fitnessData = ArrayList<Double>()
 
     for (i in 0 until numberOfPopulation + 2)
         fitnessData.add(0.toDouble())
 
-//    println("c : $population")
+//    println("c : $ga.getPopulation")
 
     for (i in 0 until numberOfPopulation + 2) {
         val mData = population[i] as ArrayList<Any>

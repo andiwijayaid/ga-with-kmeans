@@ -1,3 +1,5 @@
+package ga
+
 fun getBestSolution(): ArrayList<Any> {
     val fitnessData = ArrayList<Double>()
 

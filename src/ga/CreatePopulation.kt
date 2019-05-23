@@ -1,3 +1,5 @@
+package ga
+
 import utils.readDiabetes
 
 fun createPopulation(typeClassIndex: Int): ArrayList<Any> {

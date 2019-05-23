@@ -1,4 +1,4 @@
-
+package ga
 fun mutation(child: ArrayList<Any>, mutationRate: Double, typeClassIndex: Int): ArrayList<Any> {
 
     val mutationValues = arrayOf(

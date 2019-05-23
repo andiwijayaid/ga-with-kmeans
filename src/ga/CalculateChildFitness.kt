@@ -1,3 +1,5 @@
+package ga
+
 import kotlin.math.sqrt
 
 fun calcuateChildFitness(child: ArrayList<Int>, classParameterIndex: Int): Double {
