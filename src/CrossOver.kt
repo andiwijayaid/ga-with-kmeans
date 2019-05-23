@@ -1,14 +1,8 @@
 
-fun crossOver(parent1: ArrayList<Int>, parent2: ArrayList<Int>): Array<ArrayList<Int>> {
+fun crossOver(parent1: ArrayList<Any>, parent2: ArrayList<Any>): Array<Any> {
 
-    val child1 = parent1
-    val child2 = parent2
+    val newChild1 = arrayListOf(parent1[0], parent1[1], parent2[2], parent2[3], parent1[4])
+    val newChild2 = arrayListOf(parent2[0], parent2[1], parent1[2], parent1[3], parent2[4])
 
-    child1.set(2, parent2[2])
-    child1.set(3, parent2[3])
-
-    child2.set(2, parent1[2])
-    child2.set(3, parent1[3])
-
-    return arrayOf(child1, child2)
+    return arrayOf(newChild1, newChild2)
 }

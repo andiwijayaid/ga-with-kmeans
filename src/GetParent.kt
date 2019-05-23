@@ -1,23 +1,25 @@
-fun getParent(typeClassIndex: Int): IntArray {
+fun getParent(): IntArray {
 
-    val fitnessData = ArrayList<Float>()
+    val fitnessData = ArrayList<Double>()
     val parentIndex = IntArray(2)
 
-    for (i in 0 until numberOfPopulation)
-        fitnessData.add(0f)
-
-    for (i in 0 until numberOfPopulation) {
-        fitnessData[i] = population[i]?.get(typeClassIndex + 1) as Float
+    for (i in 0 until numberOfPopulation){
+        fitnessData.add(0.toDouble())
     }
 
-//    println()
+//    println("b: $population")
+
+    for (i in 0 until numberOfPopulation) {
+        val mData = population[i] as ArrayList<Any>
+        fitnessData[i] = mData[4] as Double
+    }
 
     for (i in 0 until 2) {
 
         val minValue = fitnessData.min()!!
         val minIndex = fitnessData.indexOf(minValue)
         parentIndex[i] = minIndex
-        fitnessData[minIndex] = 9999F
+        fitnessData[minIndex] = 9999.0
 
     }
 

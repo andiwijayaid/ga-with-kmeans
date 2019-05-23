@@ -1,42 +1,43 @@
+import utils.writeCentroid
+
 var numberOfPopulation = 0
 
-// (pregnancies, glucose, age, blood_presure)
-// centroid awal untuk setiap kelas
-// array 0: kelas prediabetes
-// array 1: kelas type 1
-// array 2: kelas type 2
 val classParameter = arrayOf(
     arrayOf(1, 125, 20, 120),
     arrayOf(4, 130, 30, 130),
     arrayOf(6, 135, 40, 140)
 )
 
-lateinit var population: HashMap<Int, ArrayList<Any>>
-
-fun createRandomNumber(lowerLimit: Int, upperLimit: Int): Int {
-    return (lowerLimit..upperLimit).random()
-}
+lateinit var population: ArrayList<Any>
+var bestByItsClass = arrayListOf<Any>()
 
 fun main() {
-    // Read from CSV
-    // Hitung fitness untuk semua individu awal
-    // Nilai fitness menggunakan euclidean distance berdasarkan konstanta parameter awal berdasarkan kelasnya
-    // Nilai fitness ditampung dalam array, dimana
-    // Nilai fitness terdiri dari fitness untuk kelas prediabetes, type 1, type 2
-    population = createPopulation() // Read from CSV
-    numberOfPopulation = population.size
-    val mutationRate = 0.01
+    var bestSolution = arrayListOf<Any>()
 
-    // Tahapan seleksi:
+
+    // Read from CSV
+    // Parameter tersimpan dalam file dengan ekstensi csv
+    // Proses ini dilakukan sebanyak 3 kali untuk masing-masing kelas, dimana:
     // Iterasi 0 untuk kelas prediabetes
     // Iterasi 1 untuk kelas type1
     // Iterasi 2 untuk kelas type2
-    // Untuk mencari individu terbaik, perulangan dibatasi hingga 1000 epoch
-    // Seleksi 2 individu untuk menjadi parent
+
+    // Setelah dilakukan pembacaan data,
+    // Akan dihitung fitness untuk semua individu awal
+    // Nilai fitness menggunakan euclidean distance berdasarkan konstanta parameter awal berdasarkan kelasnya
+    // Nilai fitness ditampung dalam array, dimana
+    // Nilai fitness terdiri dari fitness untuk kelas prediabetes, type 1, type 2
+    // Nilai pregnancies, glucose, age, blood_presure, dan fitnessnya disimpan dalam sebuah array
+    // contoh, pregnancies: 9, glucose: 125, age: 35, blood_presure: 120, dan fitnessnya: 10 (untuk kelas 1)
+    // maka Diabetes = [9, 125, 35, 120, 10]
+
+    // Tahapan seleksi:
+    // Untuk mencari individu terbaik, perulangan dibatasi hingga nilai fitness untuk masing2 kelas > 18
+    // Selanjutnya dilakukan seleksi 2 individu untuk menjadi parent
     // 2 individu yang terpilih merupakan individu dengan nilai fitness terkecil
     // selanjutnya adalah crossover
     // crossover yang digunakan adalah one point crossover
-    // nilai yang ditukar adalah nilai age, blood_presure
+    // nilai yang ditukar adalah nilai age dan blood_presure untuk masing2 parent
     // dihasilkan 2 individu baru (child1, child2)
     // masing-masing child akan masuk pada proses mutasi
     // untuk nilai mutasi, digunakan nilai batas atas dan batas bawah dari populasi awal untuk masing-masing parameter
@@ -56,38 +57,70 @@ fun main() {
     //      yang dalam hal ini adalah 0 -199
     // perulanga ketiga randomNumber = 0.006 maka tidak terjadi mutasi untuk parameter age
     // perulangan keempat randomNumber = 0.1 maka tidak terjadi mutasi untuk parameter blood_presure
-    // --- end of Contoh Kasus ---
-
     // setelah dilakukan mutasi, child1 dan child2 lalu akan kembali dihitung fitnessnya
     // perhitungan fitness tetap menggunakan euclidean distance berdasarkan klasifikasi kelasnya masing-masing
+    // --- end of Contoh Kasus ---
+
+    // Hasil dari 2 child yang mengalami mutasi lalu ditambahkan kedalam populasi
+    // dengan begitu, besarnya populasi saat ini adalah
+    // populasi  = 768 + 2 individu baru = 770
 
     // selanjutnya akan dilakukan proses regenerasi
     // proses ini akan mengambil nilai fitness terbesar dari populasi
-    // yang berarti nilainya jauh dari centroid yang diharapkan
-    // input child yang telah dibuat digenerate sebelumnya
-    // proses ini dilakukan 2 kali untuk 2 child yang berbeda
+    // yang berarti data tersebut relatif lebih jauh dari intial centroidnya
+    // individu dengan nilai terbesar tersebut lalu dihapus dari populasi
+    // proses diatas dilakukan sebanyak 2 kali
+    // sehingga populasi kembali ke ukuran awal sebanyak 768 individu
 
+    // setelah itu dilakukan proses pemilihan individu dengan nilai fitness terbaik
+    // nilai tersebut disimpan dalam variabel fitness
+    // perulangan diatas akan terus berulang untuk memilih parent baru jika
+    // nilai fitness lebih besar dari 18.0
+    // jika nilai fitness sudah lebih kecil dari 18.0 maka,
+    // individu dengan fitness terbaik tersebut akan ditambahkan kedalam sebuah array
+    // array bestByIts class dimana indexnya menandakan kelasnya (3 kelas berbeda)
+
+    // perulangan diatas akan dilakukan sebanyak 3 kali untuk 3 kelas yang berbeda
+    // ketika selesai, nilai yang ditampung dalam bestByItsClass akan
+    // ditulis/disimpan dalam sebuah file csv
+    // CSV ini lalu akan digunakan untuk centroid awal dalam algoritma kmeans
     for (i in 0 until 3) {
+        population = createPopulation(i)
+        numberOfPopulation = population.size
+        val mutationRate = 0.01
 
-        for (j in 0 until 1000) {
-            val parentIndex = getParent(i)
+        var fitness = 999.0
+
+        while (fitness > 18.0) {
+            val parentIndex = getParent()
             val parent1 = population[parentIndex[0]]
             val parent2 = population[parentIndex[1]]
 
-            val crossOver = crossOver(parent1?.get(0) as ArrayList<Int>, parent2?.get(0) as ArrayList<Int>)
+            val crossOver = crossOver(parent1 as ArrayList<Any>, parent2 as ArrayList<Any>)
 
             val child1 = crossOver[0]
-            val mutatedChild1 = mutation(child1, mutationRate)
-            val child1Fitness = calculateFitness(mutatedChild1, i)
+            val mutatedChild1 = mutation(child1 as ArrayList<Any>, mutationRate, i)
 
             val child2 = crossOver[1]
-            val mutatedChild2 = mutation(child2, mutationRate)
-            val child2Fitness = calculateFitness(mutatedChild2, i)
+            val mutatedChild2 = mutation(child2 as ArrayList<Any>, mutationRate, i)
 
-            regeneration(mutatedChild1, child1Fitness, mutatedChild2, child2Fitness, i)
+            population.add(mutatedChild1)
+            population.add(mutatedChild2)
+
+            regeneration()
+
+            bestSolution = getBestSolution()
+            fitness = bestSolution[4] as Double
+            println("Best Solution for $i: $bestSolution")
         }
-        val bestSolution = getBestSolution()
-        println("Best Solution for $i: $bestSolution")
+        bestByItsClass.add(bestSolution)
     }
+    println(bestByItsClass)
+
+    writeCentroid(
+        bestByItsClass[0] as ArrayList<Any>,
+        bestByItsClass[1] as ArrayList<Any>,
+        bestByItsClass[2] as ArrayList<Any>
+    )
 }
 

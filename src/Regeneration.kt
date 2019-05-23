@@ -1,17 +1,14 @@
-fun regeneration(
-    mutatedChild1: ArrayList<Int>,
-    child1Fitness: ArrayList<Float>,
-    mutatedChild2: ArrayList<Int>,
-    child2Fitness: ArrayList<Float>,
-    typeClassIndex: Int
-) {
-    val fitnessData = ArrayList<Float>()
+fun regeneration() {
+    val fitnessData = ArrayList<Double>()
 
-    for (i in 0 until numberOfPopulation)
-        fitnessData.add(0f)
+    for (i in 0 until numberOfPopulation + 2)
+        fitnessData.add(0.toDouble())
 
-    for (i in 0 until numberOfPopulation) {
-        fitnessData[i] = population[i]?.get(typeClassIndex + 1) as Float
+//    println("c : $population")
+
+    for (i in 0 until numberOfPopulation + 2) {
+        val mData = population[i] as ArrayList<Any>
+        fitnessData[i] = mData[4] as Double
     }
 
     for (i in 0 until 2) {
@@ -19,22 +16,7 @@ fun regeneration(
         val maxValue = fitnessData.max()
         val maxIndex = fitnessData.indexOf(maxValue)
 
-        population.remove(maxIndex)
-
-        val newGen = ArrayList<Any>()
-
-        if (i == 0) {
-            newGen.add(mutatedChild1)
-            newGen.add(child1Fitness[0])
-            newGen.add(child1Fitness[1])
-            newGen.add(child1Fitness[2])
-            population.put(maxIndex, newGen)
-        } else {
-            newGen.add(mutatedChild2)
-            newGen.add(child2Fitness[0])
-            newGen.add(child2Fitness[1])
-            newGen.add(child2Fitness[2])
-            population.put(maxIndex, newGen)
-        }
+        fitnessData.removeAt(maxIndex)
+        population.removeAt(maxIndex)
     }
 }

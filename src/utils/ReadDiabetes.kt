@@ -12,14 +12,14 @@ private const val DIABETES_GLUCOSE = 2
 private const val DIABETES_AGE = 3
 private const val DIABETES_BLOOD_PRESSURE = 4
 
-fun readFromFile(): ArrayList<Diabetes>? {
+fun readDiabetes(): ArrayList<Diabetes>? {
     var fileReader: BufferedReader? = null
 
     try {
         val diabeteses = ArrayList<Diabetes>()
         var line: String?
 
-        fileReader = BufferedReader(FileReader("diabetes.csv"))
+        fileReader = BufferedReader(FileReader("C:\\Users\\Andi\\Documents\\DiabetesData\\diabetes.csv"))
 
         // Read CSV header
         fileReader.readLine()
