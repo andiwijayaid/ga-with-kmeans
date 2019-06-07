@@ -1,4 +1,4 @@
-package k
+package kmeans
 
 import kotlin.math.sqrt
 

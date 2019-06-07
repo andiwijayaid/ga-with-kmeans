@@ -1,6 +1,9 @@
 package ga
 fun mutation(child: ArrayList<Any>, mutationRate: Double, typeClassIndex: Int): ArrayList<Any> {
 
+    // nilai batas atas dan batas bawah untuk masing-masing
+    // parameter pregnancies, glucose, age, blood_presure secara berurutan
+    // nilai ini digunakna untuk membuat rentang nilai random untuk masing-masing parameter
     val mutationValues = arrayOf(
         arrayOf(0, 17),
         arrayOf(0, 199),
@@ -14,7 +17,7 @@ fun mutation(child: ArrayList<Any>, mutationRate: Double, typeClassIndex: Int): 
         }
     }
 
-    val gen = arrayListOf<Int>(child[0] as Int, child[1] as Int, child[2] as Int, child[3] as Int)
+    val gen = arrayListOf(child[0] as Int, child[1] as Int, child[2] as Int, child[3] as Int)
 
     val mutatedFitness = calculateFitness(gen, typeClassIndex)
 

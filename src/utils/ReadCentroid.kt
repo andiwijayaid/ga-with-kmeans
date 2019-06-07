@@ -41,9 +41,9 @@ fun readCentroid(): ArrayList<Diabetes>? {
         }
 
         // Print the new customer list
-        for (centroid in centroids) {
-            println(centroid)
-        }
+//        for (centroid in centroids) {
+//            println(centroid)
+//        }
         return centroids
     } catch (e: Exception) {
         println("Reading CSV Error!")

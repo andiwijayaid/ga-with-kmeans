@@ -1,5 +1,5 @@
 import ga.geneticAlgorithm
-import k.kMeans
+import kmeans.kMeans
 
 fun main() {
     geneticAlgorithm()

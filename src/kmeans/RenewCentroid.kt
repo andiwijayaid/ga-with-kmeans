@@ -1,6 +1,7 @@
-package k
+package kmeans
 
-fun renewCentroid(clusterData: ArrayList<Int>) {
+
+fun renewCentroid(clusterData: ArrayList<Int>): ArrayList<ArrayList<Double>> {
 
     var pregnancies0 = 0.toDouble()
     var glucose0 = 0.toDouble()
@@ -64,5 +65,10 @@ fun renewCentroid(clusterData: ArrayList<Int>) {
     centroids[1] = arrayListOf(pregnancies1, glucose1, age1, blood_pressure1)
     centroids[2] = arrayListOf(pregnancies2, glucose2, age2, blood_pressure2)
 
-    println("${centroids[0]}, ${centroids[1]}, ${centroids[2]}")
+    val centroid = ArrayList<Any>()
+    centroid.add(centroids[0])
+    centroid.add(centroids[1])
+    centroid.add(centroids[2])
+
+    return arrayListOf(centroids[0], centroids[1], centroids[2])
 }

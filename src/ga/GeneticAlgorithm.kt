@@ -1,6 +1,9 @@
 package ga
 
+import chart.ScatterPlotExample
+import kmeans.centroid
 import utils.writeCentroid
+import javax.swing.WindowConstants
 
 var numberOfPopulation = 0
 
@@ -116,6 +119,10 @@ fun geneticAlgorithm() {
         }
         bestByItsClass.add(bestSolution)
     }
+
+    println("centroid prediabetes: ${bestByItsClass[0]}")
+    println("centroid type 1: ${bestByItsClass[1]}")
+    println("centroid type 2: ${bestByItsClass[2]}")
     println(bestByItsClass)
 
     writeCentroid(
@@ -124,6 +131,19 @@ fun geneticAlgorithm() {
         bestByItsClass[2] as ArrayList<Any>
     )
 
+    centroid = arrayListOf(
+        bestByItsClass[0] as ArrayList<Double>,
+        bestByItsClass[1] as ArrayList<Double>,
+        bestByItsClass[2] as ArrayList<Double>
+    )
 
+    val scatterPlotExample1 = ScatterPlotExample(
+        "Pima Diabetes - Genetic Algorithm"
+    )
+    scatterPlotExample1.setSize(800, 400)
+    scatterPlotExample1.setLocationRelativeTo(null)
+    scatterPlotExample1.defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+    scatterPlotExample1.isVisible = true
+    centroid.clear()
 }
 

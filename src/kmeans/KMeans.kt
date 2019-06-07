@@ -1,15 +1,23 @@
-package k
+package kmeans
 
+import chart.ScatterPlotExample
 import utils.readCentroid
 import utils.readDiabetes
+import utils.writeResult
 import java.util.Scanner
+import javax.swing.WindowConstants
 import kotlin.collections.ArrayList
 
-var oldClusterData = ArrayList<Int>()
-var newClusterData = ArrayList<Int>()
+var glucose: Double = 0.0
+var age: Double = 0.0
+
+var previousDataCluster = ArrayList<Int>()
+var currentDataCluster = ArrayList<Int>()
 
 val centroids = ArrayList<ArrayList<Double>>()
 var diabeteses = ArrayList<ArrayList<Double>>()
+
+var centroid = ArrayList<ArrayList<Double>>()
 
 fun kMeans() {
 
@@ -56,7 +64,7 @@ fun kMeans() {
     // data centroid dari masing-masing kluster ini lalu akan diupdate ke variabel array centroids
 
     // update centroid akan dilakukan selama belum konvergen, dimana
-    // konvergen ditentukan ketika isi dari oldClusterData sama dengan newClusterData
+    // konvergen ditentukan ketika isi dari previousDataCluster sama dengan currentDataCluster
 
     val centroidData = readCentroid()
     println(centroidData)
@@ -104,30 +112,39 @@ fun kMeans() {
         val clusterData = ArrayList<Int>()
 
         println()
-        oldClusterData = newClusterData
-        println("OCD: $oldClusterData")
+        previousDataCluster = currentDataCluster
+        println("OCD: $previousDataCluster")
 
         for (j in 0 until diabeteses.size) {
             val distances = euclideanDistance(diabeteses[j])
-            println("Dis: $distances")
             clusterData.add(findCluster(distances))
         }
-        newClusterData = clusterData
-        println(" CD: $newClusterData")
-        renewCentroid(clusterData)
+        currentDataCluster = clusterData
+        println(" CD: $currentDataCluster")
+        centroid.clear()
+        centroid = renewCentroid(clusterData)
         println(isNotConvergen())
         println("epoch: ${counter++}")
     } while (!isNotConvergen())
 
+    println("centroid prediabetes: ${centroid[0]}")
+    println("centroid type 1: ${centroid[1]}")
+    println("centroid type 2: ${centroid[2]}")
     println()
+
+    val scatterPlotExample = ScatterPlotExample("Pima Diabetes - K-Means")
+    scatterPlotExample.setSize(800, 400)
+    scatterPlotExample.setLocationRelativeTo(null)
+    scatterPlotExample.defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+    scatterPlotExample.isVisible = true
 
     val reader = Scanner(System.`in`)
     print("Pregnancies: ")
     val pregnancies = reader.nextDouble()
     print("Glucose: ")
-    val glucose = reader.nextDouble()
+    glucose = reader.nextDouble()
     print("Age: ")
-    val age = reader.nextDouble()
+    age = reader.nextDouble()
     print("Blood Presure: ")
     val blood_presure = reader.nextDouble()
 
@@ -135,5 +152,20 @@ fun kMeans() {
     val mDistances = euclideanDistance(data)
     println(mDistances)
     val mCluster = findCluster(mDistances)
-    println("This data belongs to cluster ${mCluster+1}")
+    println("This data belongs to cluster ${mCluster + 1}")
+
+    val scatterPlotExample1 = ScatterPlotExample("Pima Diabetes - K-Means with new Data")
+    scatterPlotExample1.setSize(800, 400)
+    scatterPlotExample1.setLocationRelativeTo(null)
+    scatterPlotExample1.defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+    scatterPlotExample1.isVisible = true
+
+    diabeteses.add(arrayListOf(pregnancies, glucose, age, blood_presure))
+    currentDataCluster.add(mCluster)
+
+    // write as CSV
+    writeResult(
+        diabeteses,
+        currentDataCluster
+    )
 }

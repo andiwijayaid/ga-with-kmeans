@@ -42,9 +42,9 @@ fun readDiabetes(): ArrayList<Diabetes>? {
         }
 
         // Print the new customer list
-        for (diabetes in diabeteses) {
-            println(diabetes)
-        }
+//        for (diabetes in diabeteses) {
+//            println(diabetes)
+//        }
         return diabeteses
     } catch (e: Exception) {
         println("Reading CSV Error!")
