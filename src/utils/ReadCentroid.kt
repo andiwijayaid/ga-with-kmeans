@@ -1,5 +1,4 @@
 package utils
-
 import model.Diabetes
 import java.io.BufferedReader
 import java.io.FileReader
@@ -12,14 +11,14 @@ private const val DIABETES_GLUCOSE = 2
 private const val DIABETES_AGE = 3
 private const val DIABETES_BLOOD_PRESSURE = 4
 
-fun readDiabetes(): ArrayList<Diabetes>? {
+fun readCentroid(): ArrayList<Diabetes>? {
     var fileReader: BufferedReader? = null
 
     try {
-        val diabeteses = ArrayList<Diabetes>()
+        val centroids = ArrayList<Diabetes>()
         var line: String?
 
-        fileReader = BufferedReader(FileReader("C:\\Users\\Andi\\Documents\\DiabetesData\\diabetes.csv"))
+        fileReader = BufferedReader(FileReader("C:\\Users\\Andi\\Documents\\DiabetesData\\initial_centroid.csv"))
 
         // Read CSV header
         fileReader.readLine()
@@ -35,17 +34,17 @@ fun readDiabetes(): ArrayList<Diabetes>? {
                     Integer.parseInt(tokens[DIABETES_GLUCOSE]),
                     Integer.parseInt(tokens[DIABETES_AGE]),
                     Integer.parseInt(tokens[DIABETES_BLOOD_PRESSURE]))
-                diabeteses.add(customer)
+                centroids.add(customer)
             }
 
             line = fileReader.readLine()
         }
 
         // Print the new customer list
-//        for (diabetes in diabeteses) {
-//            println(diabetes)
+//        for (centroid in centroids) {
+//            println(centroid)
 //        }
-        return diabeteses
+        return centroids
     } catch (e: Exception) {
         println("Reading CSV Error!")
         e.printStackTrace()

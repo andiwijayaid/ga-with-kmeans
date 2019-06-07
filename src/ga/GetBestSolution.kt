@@ -1,3 +1,5 @@
+package ga
+
 fun getBestSolution(): ArrayList<Any> {
     val fitnessData = ArrayList<Double>()
 
@@ -9,8 +11,10 @@ fun getBestSolution(): ArrayList<Any> {
         fitnessData[i] = mData[4] as Double
     }
 
-    val maxValue = fitnessData.min()
-    val maxIndex = fitnessData.indexOf(maxValue)
+    // mencari individu terbaik
+    // dimana pada kasus ini fitness terkecil merupakan indivudu terbaik
+    val minValue = fitnessData.min()
+    val minIndex = fitnessData.indexOf(minValue)
 
-    return population[maxIndex] as ArrayList<Any>
+    return population[minIndex] as ArrayList<Any>
 }

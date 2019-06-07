@@ -1,11 +1,16 @@
+package ga
+
 import utils.readDiabetes
 
 fun createPopulation(typeClassIndex: Int): ArrayList<Any> {
 
+    // baca dari file diabetes.csv
     val diabetesData = readDiabetes()
 
     val population = ArrayList<Any>()
 
+    // setiap individu memiliki 4 parameter / 4 gen
+    // yaitu pregnancies, glucose, age, blood_presure
     for (i in 0 until diabetesData!!.size) {
         val gen = arrayListOf(
             diabetesData[i].pregnancies,
